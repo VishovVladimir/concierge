@@ -4,11 +4,28 @@ import logging
 import sys
 import os
 import cv2
+import requests
+
 
 from utils import load_config, download_image, run_inference, send_telegram_message, send_log_message
 
 
 CONFIG_PATH = '/etc/concierge/config.yaml'
+DEFAULT_MODEL_URL = "https://huggingface.co/.../yolov8n_person.onnx"
+DEFAULT_MODEL_PATH = "/home/dietpi/concierge/yolov8n_person.onnx"
+
+
+def ensure_model_exists(model_path=DEFAULT_MODEL_PATH, model_url=DEFAULT_MODEL_URL):
+    """Download the YOLO model if missing."""
+    if not os.path.isfile(model_path):
+        print(f"Model not found at {model_path}. Downloading...")
+        os.makedirs(os.path.dirname(model_path), exist_ok=True)
+        response = requests.get(model_url, stream=True)
+        response.raise_for_status()
+        with open(model_path, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                f.write(chunk)
+        print("✅ Model downloaded successfully.")
 
 def setup_logging():
     """Configure logging."""
@@ -26,6 +43,11 @@ def main():
     logger = setup_logging()
 
     config = load_config(CONFIG_PATH)
+
+    model_path = config.get('model_path', DEFAULT_MODEL_PATH)
+    model_url = config.get('model_url', DEFAULT_MODEL_URL)
+
+    ensure_model_exists(model_path, model_url)
 
     snapshot_url = config.get('snapshot_url')
     model_path = config.get('model_path')

@@ -54,6 +54,8 @@ model_path: "/home/dietpi/concierge/yolov8n_person.onnx"
 confidence_threshold: 0.5
 check_interval_seconds: 60
 DEBUG: false
+model_path: "/home/dietpi/concierge/yolov8n_person.onnx"
+model_url: "https://huggingface.co/.../yolov8n_person.onnx"
 EOF
 fi
 
