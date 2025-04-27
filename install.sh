@@ -8,7 +8,8 @@ PROJECT_DIR="/root/concierge"
 SERVICE_NAME="concierge"
 
 # === INSTALL PYTHON DEPENDENCIES ===
-sudo apt install -y python3 python3-pip python3.11-venv libgl1# === CREATE VENV ===
+sudo apt install -y python3 python3-pip python3.11-venv libgl1
+# === CREATE VENV ===
 python3 -m venv /root/concierge/venv
 
 # === ACTIVATE VENV ===
