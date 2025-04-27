@@ -31,15 +31,6 @@ pip install -r requirements.txt
 
 # After install, venv stays isolated.
 
-# === CLONE OR UPDATE REPO ===
-if [ ! -d "$PROJECT_DIR" ]; then
-  git clone "$REPO_URL" "$PROJECT_DIR"
-fi
-
-cd "$PROJECT_DIR"
-git fetch
-git checkout "$BRANCH_NAME"
-git pull origin "$BRANCH_NAME"
 
 # === CREATE DEFAULT CONFIG IF NOT EXISTS ===
 if [ ! -f /etc/concierge/config.yaml ]; then
