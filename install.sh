@@ -19,8 +19,17 @@ echo "Installing Concierge from branch '$BRANCH_NAME'..."
 # === INSTALL PYTHON DEPENDENCIES ===
 sudo apt update
 sudo apt install -y python3 python3-pip
-pip3 install --upgrade pip
-pip3 install -r requirements.txt || true
+# === CREATE VENV ===
+python3 -m venv /home/dietpi/concierge/venv
+
+# === ACTIVATE VENV ===
+source /home/dietpi/concierge/venv/bin/activate
+
+# === INSTALL PYTHON DEPENDENCIES ===
+pip install --upgrade pip
+pip install -r requirements.txt
+
+# After install, venv stays isolated.
 
 # === CLONE OR UPDATE REPO ===
 if [ ! -d "$PROJECT_DIR" ]; then

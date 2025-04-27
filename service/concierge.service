@@ -3,10 +3,11 @@ Description=Concierge Camera Watcher
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 /home/dietpi/concierge/concierge.py
+ExecStart=/home/dietpi/concierge/venv/bin/python /home/dietpi/concierge/concierge.py
 WorkingDirectory=/home/dietpi/concierge
 Restart=always
 User=dietpi
+Environment=PYTHONUNBUFFERED=1
 
 [Install]
 WantedBy=multi-user.target
