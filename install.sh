@@ -50,7 +50,7 @@ Description=Concierge Camera Watcher
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 $PROJECT_DIR/concierge.py
+ExecStart=$PROJECT_DIR/venv/bin/python $PROJECT_DIR/concierge.py
 WorkingDirectory=$PROJECT_DIR
 Restart=always
 User=root
