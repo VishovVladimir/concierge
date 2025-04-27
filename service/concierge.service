@@ -10,4 +10,4 @@ User=root
 Environment=PYTHONUNBUFFERED=1
 
 [Install]
-WantedBy=multi
+WantedBy=multi-user.target

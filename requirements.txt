@@ -3,4 +3,3 @@ onnxruntime
 requests
 python-telegram-bot
 PyYAML
-opencv-python
