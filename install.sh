@@ -6,15 +6,6 @@ set -e
 REPO_URL="https://github.com/YOUR_USERNAME/concierge.git"
 PROJECT_DIR="/root/concierge"
 SERVICE_NAME="concierge"
-BRANCH_NAME="$1"
-
-# === CHECKS ===
-if [ -z "$BRANCH_NAME" ]; then
-  echo "Usage: ./install.sh branch-name"
-  exit 1
-fi
-
-echo "Installing Concierge from branch '$BRANCH_NAME'..."
 
 # === INSTALL PYTHON DEPENDENCIES ===
 sudo apt install -y python3 python3-pip python3.11-venv
