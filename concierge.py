@@ -12,7 +12,7 @@ from utils import load_config, download_image, run_inference, send_telegram_mess
 
 CONFIG_PATH = '/etc/concierge/config.yaml'
 DEFAULT_MODEL_URL = "https://huggingface.co/.../yolov8n_person.onnx"
-DEFAULT_MODEL_PATH = "/home/dietpi/concierge/yolov8n_person.onnx"
+DEFAULT_MODEL_PATH = "/root/concierge/yolov8n_person.onnx"
 
 
 def ensure_model_exists(model_path=DEFAULT_MODEL_PATH, model_url=DEFAULT_MODEL_URL):
