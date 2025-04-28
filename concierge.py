@@ -6,7 +6,15 @@ import os
 import cv2
 import requests
 
-from utils import load_config, download_image, run_inference, send_telegram_message, send_log_message, load_model
+from utils import (
+    load_config,
+    download_image,
+    run_inference,
+    send_telegram_message,
+    send_log_message,
+    load_model,
+    edit_telegram_message
+)
 
 CONFIG_PATH = '/etc/concierge/config.yaml'
 
@@ -28,21 +36,29 @@ def main():
     snapshot_url = config.get('snapshot_url')
     model_path = config.get('model_path')
     confidence_threshold = config.get('confidence_threshold', 0.5)
-    check_interval = config.get('check_interval_seconds', 60)
+    check_interval = config.get('check_interval_seconds', 2
     debug_mode = config.get('DEBUG', False)
 
     logger.info("Concierge started.")
     logger.info(f"Snapshot URL: {snapshot_url}")
     logger.info(f"Model path: {model_path}")
 
-    # === Load YOLO model once ===
     load_model(model_path)
     logger.info("YOLO model loaded successfully.")
+
+    last_detection_time = 0
+    last_message_id = None
+    last_chat_id = None
 
     while True:
         try:
             logger.debug("Downloading snapshot...")
-            img = download_image(snapshot_url)
+            try:
+                img = download_image(snapshot_url)
+            except Exception as e:
+                logger.error(f"Snapshot download failed: {e}")
+                time.sleep(check_interval)
+                continue
 
             logger.debug("Running inference...")
             boxes = run_inference(img, confidence_threshold)
@@ -52,8 +68,21 @@ def main():
                 for box in boxes:
                     cv2.rectangle(img, (box[0], box[1]), (box[2], box[3]), (0, 255, 0), 2)
 
-                send_telegram_message(config, img, text="arriving somebody")
-                logger.info("Notification sent via Telegram.")
+                current_time = time.time()
+
+                if last_detection_time and (current_time - last_detection_time < 60) and last_message_id:
+                    logger.info("Editing previous Telegram message with new snapshot.")
+                    try:
+                        edit_telegram_message(config, img, last_chat_id, last_message_id)
+                    except Exception as e:
+                        logger.error(f"Failed to edit message: {e}")
+                        logger.info("Trying to send new message instead.")
+                        last_message_id, last_chat_id = send_telegram_message(config, img, text="arriving somebody")
+                else:
+                    logger.info("Sending new Telegram message.")
+                    last_message_id, last_chat_id = send_telegram_message(config, img, text="arriving somebody")
+
+                last_detection_time = current_time
             else:
                 logger.debug("No person detected.")
 
