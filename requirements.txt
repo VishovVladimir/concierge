@@ -3,3 +3,4 @@ onnxruntime
 requests
 python-telegram-bot
 PyYAML
+ultralytics

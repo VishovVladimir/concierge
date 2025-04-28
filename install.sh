@@ -7,6 +7,9 @@ REPO_URL="https://github.com/YOUR_USERNAME/concierge.git"
 PROJECT_DIR="/root/concierge"
 SERVICE_NAME="concierge"
 
+MODEL_PATH="$PROJECT_DIR/yolov8n_person.onnx"
+MODEL_URL="https://github.com/ultralytics/assets/releases/download/v8.0.0/yolov8n.onnx"
+
 # === INSTALL PYTHON DEPENDENCIES ===
 sudo apt install -y python3 python3-pip python3.11-venv libgl1
 # === CREATE VENV ===
@@ -40,6 +43,15 @@ model_path: "/root/concierge/yolov8n_person.onnx"
 model_url: "https://huggingface.co/.../yolov8n_person.onnx"
 EOF
 fi
+
+# === DOWNLOAD YOLO ONNX MODEL IF MISSING ===
+if [ ! -f "$MODEL_PATH" ]; then
+  echo "Downloading YOLO model..."
+  wget -O "$MODEL_PATH" "$MODEL_URL"
+else
+  echo "YOLO model already exists, skipping download."
+fi
+
 
 # === INSTALL SYSTEMD SERVICE ===
 echo "Installing systemd service..."
