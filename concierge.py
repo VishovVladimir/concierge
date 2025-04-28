@@ -6,18 +6,11 @@ import os
 import cv2
 import requests
 
-
-from utils import load_config, download_image, run_inference, send_telegram_message, send_log_message
-
+from utils import load_config, download_image, run_inference, send_telegram_message, send_log_message, load_model
 
 CONFIG_PATH = '/etc/concierge/config.yaml'
-DEFAULT_MODEL_URL = "https://huggingface.co/.../yolov8n_person.onnx"
-DEFAULT_MODEL_PATH = "/root/concierge/yolov8n_person.onnx"
-
-
 
 def setup_logging():
-    """Configure logging."""
     logger = logging.getLogger("concierge")
     logger.setLevel(logging.DEBUG)
 
@@ -26,7 +19,6 @@ def setup_logging():
 
     logger.addHandler(handler)
     return logger
-
 
 def main():
     logger = setup_logging()
@@ -43,13 +35,17 @@ def main():
     logger.info(f"Snapshot URL: {snapshot_url}")
     logger.info(f"Model path: {model_path}")
 
+    # === Load YOLO model once ===
+    load_model(model_path)
+    logger.info("YOLO model loaded successfully.")
+
     while True:
         try:
             logger.debug("Downloading snapshot...")
             img = download_image(snapshot_url)
 
             logger.debug("Running inference...")
-            boxes = run_inference(img, model_path, confidence_threshold)
+            boxes = run_inference(img, confidence_threshold)
 
             if boxes:
                 logger.info(f"Detected {len(boxes)} person(s). Marking image...")
@@ -72,7 +68,6 @@ def main():
                     logger.error(f"Failed to send debug log to Telegram: {telegram_error}")
 
         time.sleep(check_interval)
-
 
 if __name__ == "__main__":
     try:

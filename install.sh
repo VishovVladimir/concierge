@@ -44,15 +44,6 @@ model_url: "https://huggingface.co/.../yolov8n_person.onnx"
 EOF
 fi
 
-# === DOWNLOAD YOLO ONNX MODEL IF MISSING ===
-if [ ! -f "$MODEL_PATH" ]; then
-  echo "Downloading YOLO model..."
-  wget -O "$MODEL_PATH" "$MODEL_URL"
-else
-  echo "YOLO model already exists, skipping download."
-fi
-
-
 # === INSTALL SYSTEMD SERVICE ===
 echo "Installing systemd service..."
 
