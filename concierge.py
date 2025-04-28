@@ -36,7 +36,7 @@ def main():
     snapshot_url = config.get('snapshot_url')
     model_path = config.get('model_path')
     confidence_threshold = config.get('confidence_threshold', 0.5)
-    check_interval = config.get('check_interval_seconds', 2
+    check_interval = config.get('check_interval_seconds', 2)
     debug_mode = config.get('DEBUG', False)
 
     logger.info("Concierge started.")
