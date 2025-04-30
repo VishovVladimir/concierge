@@ -7,9 +7,6 @@ REPO_URL="https://github.com/YOUR_USERNAME/concierge.git"
 PROJECT_DIR="/root/concierge"
 SERVICE_NAME="concierge"
 
-MODEL_PATH="$PROJECT_DIR/yolov8n_person.onnx"
-MODEL_URL="https://github.com/ultralytics/assets/releases/download/v8.0.0/yolov8n.onnx"
-
 # === INSTALL PYTHON DEPENDENCIES ===
 sudo apt install -y python3 python3-pip python3.11-venv libgl1
 # === CREATE VENV ===
@@ -35,12 +32,9 @@ snapshot_url: "http://192.168.100.191:6688/snapshot.jpg"
 telegram_bot_token: "PUT_YOUR_TOKEN_HERE"
 notify_user_ids:
   - 123456789
-model_path: "/root/concierge/yolov8n_person.onnx"
 confidence_threshold: 0.5
-check_interval_seconds: 60
+check_interval_seconds: 5
 DEBUG: false
-model_path: "/root/concierge/yolov8n_person.onnx"
-model_url: "https://huggingface.co/.../yolov8n_person.onnx"
 EOF
 fi
 
