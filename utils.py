@@ -7,16 +7,12 @@ from ultralytics import YOLO
 import json
 
 # === Global model variable ===
-MODEL = None
+MODEL = YOLO('yolov8n.pt')
 
 def load_config(path):
     with open(path, 'r') as f:
         return yaml.safe_load(f)
 
-def load_model(model_path):
-    global MODEL
-    if MODEL is None:
-        MODEL = YOLO(model_path)
 
 def download_image(url):
     """Download image from URL and return OpenCV BGR image."""
@@ -31,8 +27,6 @@ def download_image(url):
 
 def run_inference(img, confidence_threshold=0.5):
     """Run inference using YOLO model."""
-    if MODEL is None:
-        raise RuntimeError("Model not loaded. Call load_model() first.")
 
     results = MODEL.predict(img, conf=confidence_threshold, verbose=False)
     boxes = []

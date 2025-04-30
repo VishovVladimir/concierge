@@ -1,10 +1,9 @@
-import time
-import traceback
 import logging
 import sys
-import os
+import time
+import traceback
+
 import cv2
-import requests
 
 from utils import (
     load_config,
@@ -12,7 +11,6 @@ from utils import (
     run_inference,
     send_telegram_message,
     send_log_message,
-    load_model,
     edit_telegram_message
 )
 
@@ -34,17 +32,12 @@ def main():
     config = load_config(CONFIG_PATH)
 
     snapshot_url = config.get('snapshot_url')
-    model_path = config.get('model_path')
     confidence_threshold = config.get('confidence_threshold', 0.5)
     check_interval = config.get('check_interval_seconds', 2)
     debug_mode = config.get('DEBUG', False)
 
     logger.info("Concierge started.")
     logger.info(f"Snapshot URL: {snapshot_url}")
-    logger.info(f"Model path: {model_path}")
-
-    load_model(model_path)
-    logger.info("YOLO model loaded successfully.")
 
     last_detection_time = 0
     last_message_id = None
