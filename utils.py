@@ -52,11 +52,7 @@ def send_telegram_message(config, img, text=""):
         url = f"https://api.telegram.org/bot{bot_token}/sendPhoto"
         data = {
             "chat_id": chat,
-            "caption": text,
-            "reply_markup": json.dumps({
-                "inline_keyboard": [[{"text": "Take a photo", "callback_data": "take_photo"}]]
-            })
-        }
+            "caption": text        }
         files = {"photo": ("image.jpg", img_bytes.getvalue())}
 
         try:
