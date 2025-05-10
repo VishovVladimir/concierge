@@ -25,14 +25,25 @@ def download_image(url):
         raise RuntimeError(f"Snapshot download failed: {e}")
 
 def run_inference(img, confidence_threshold=0.5):
-    """Run inference using YOLO model."""
+    """Run inference using YOLO model and ignore rightmost third of image."""
+    if MODEL is None:
+        raise RuntimeError("Model not loaded. Call load_model() first.")
+
     results = MODEL.predict(img, conf=confidence_threshold, verbose=False)
     boxes = []
+
+    img_width = img.shape[1]
+    right_limit = img_width * 2 / 3  # right third starts here
 
     for result in results:
         for box, cls in zip(result.boxes.xyxy, result.boxes.cls):
             if int(cls) == 0:  # class 0 = person
                 x1, y1, x2, y2 = map(int, box)
+                cx = (x1 + x2) / 2
+
+                if cx >= right_limit:
+                    continue  # skip if box center is in the rightmost third
+
                 boxes.append((x1, y1, x2, y2))
 
     return boxes
