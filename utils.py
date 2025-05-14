@@ -33,7 +33,7 @@ def run_inference(img, confidence_threshold=0.5):
     boxes = []
 
     img_width = img.shape[1]
-    right_limit = img_width * 2 / 3  # right third starts here
+    right_limit = img_width / 2 # right third starts here
 
     for result in results:
         for box, cls in zip(result.boxes.xyxy, result.boxes.cls):
